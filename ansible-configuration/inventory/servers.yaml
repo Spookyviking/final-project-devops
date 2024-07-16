@@ -1,0 +1,11 @@
+all:
+  children:
+    k8s_master:
+      hosts:
+
+    k8s_app:
+      hosts:
+
+    srv:
+      hosts:
+

@@ -1,0 +1,24 @@
+---
+- name: Restart kubelet
+  systemd:
+    name: kubelet
+    state: restarted
+
+- name: reload nginx
+  debug: msg="checking config first"
+  changed_when: True
+  notify:
+    - check nginx configuration
+    - reload nginx - after config check
+
+- name: check nginx configuration
+  command: /usr/sbin/nginx -t -c /etc/nginx/nginx.conf
+  register: result
+  changed_when: "result.rc != 0"
+  check_mode: no
+
+- name: reload nginx - after config check
+  systemd:
+    daemon_reload: yes
+    name: "nginx"
+    state: reloaded

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    final.project.service: app
+  name: app
+spec:
+  type: NodePort
+  ports:
+    - name: "3003"
+      port: 3003
+      targetPort: 3003
+      nodePort: 3003
+  selector:
+    final.project.service: app
+status:
+  loadBalancer: {}

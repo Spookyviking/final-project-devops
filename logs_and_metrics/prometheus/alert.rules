@@ -1,0 +1,26 @@
+groups:
+- name: final.finalproj.ru
+  rules:
+  - alert: WrongResponse
+    expr: probe_http_status_code{instance="http://final.finalproj.ru", job="blackbox"} != 200
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Response is not 200"
+  - alert: LowSpeedResponse
+    expr: probe_duration_seconds{instance="http://final.finalproj.ru", job="blackbox"} > 5
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Response is longer than 5 seconds"
+- name: Manager Server
+  rules:
+  - alert: FreeSpaceAvailable
+    expr: node_filesystem_avail_bytes{instance="node-exporter:9100", job="node"} < 1073741824
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Free space on srv is less than 1 Gb"

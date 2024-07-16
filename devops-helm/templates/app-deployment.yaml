@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    final.project.service: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      final.project.service: app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        final.project.network/django-pg-docker-tutorial-default: "true"
+        final.project.service: app
+    spec:
+      containers:
+        - args:
+            - sh
+            - -c
+            - python manage.py migrate && python manage.py runserver 0.0.0.0:3003
+          env:
+            - name: DB_HOST
+              value: 10.99.26.31
+            - name: DB_NAME
+              value: tutorial-dev
+            - name: DB_PASS
+              value: password
+            - name: DB_USER
+              value: vinhle
+          image: whywhyqwe/django-app:latest
+          name: app
+          ports:
+            - containerPort: 3003
+              hostPort: 3003
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

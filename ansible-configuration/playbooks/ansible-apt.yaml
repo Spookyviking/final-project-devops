@@ -1,0 +1,10 @@
+---
+- hosts: k8s_master, k8s_app, srv
+  gather_facts: no
+  pre_tasks:
+    - name: Wait for system to become reachable
+      wait_for_connection:
+    - name: Gather facts for the first time
+      setup:
+  roles:
+    - role: ansible-apt

@@ -1,0 +1,21 @@
+global:
+  telegram_api_url: "https://api.telegram.org"
+receivers:
+- name: 'telegram'
+  telegram_configs:
+  - chat_id: <chat_id>
+    bot_token: <bot_token>
+    api_url: "https://api.telegram.org"
+    send_resolved: true
+    parse_mode: ''
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 10m
+  repeat_interval: 60m
+  receiver: 'telegram'
+  routes:
+  - receiver: telegram
+    continue: true
+    matchers:
+     - severity="critical"

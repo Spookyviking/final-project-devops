@@ -1,0 +1,4 @@
+---
+- hosts: k8s_master, k8s_app
+  roles:
+    - role: ansible-k8s

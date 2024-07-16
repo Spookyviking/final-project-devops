@@ -1,0 +1,32 @@
+---
+- name: Settings ip_forward
+  become: true
+  shell: echo 1 > /proc/sys/net/ipv4/ip_forward
+  changed_when: false
+  when: "'k8s_master' in group_names or 'k8s_app' in group_names"
+
+- name: K8s init
+  become: true
+  shell: kubeadm init --pod-network-cidr=10.100.0.0/16
+  changed_when: false
+  when: "'k8s_master' in group_names"
+
+- name: Edit node port range
+  become: true
+  lineinfile:
+    path: /etc/kubernetes/manifests/kube-apiserver.yaml
+    insertafter: '\s\s- \-\-tls\-private\-key\-file'
+    line: '    - --service-node-port-range=3000-30000'
+  when: "'k8s_master' in group_names"
+
+- name: Settings k8s
+  become: true
+  shell: >
+    mkdir -p /home/ubuntu/.kube &&
+    cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config &&
+    chown ubuntu:ubuntu /home/ubuntu/.kube/config &&
+    swapoff -a
+  changed_when: false
+  notify:
+    - Restart kubelet
+  when: "'k8s_master' in group_names"

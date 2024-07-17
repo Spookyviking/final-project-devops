@@ -53,10 +53,10 @@ kubectl port-forward --address 0.0.0.0  <имя_пода_приложения>  
 
 Фотооотчёт:
 
-- ![grafana1](./images/grafana1.PNG)
+- ![grafana1](./images/grafana1.png)
 
-- ![grafana2](./images/grafana2.PNG)
+- ![grafana2](./images/grafana2.png)
 
-- ![prometheus1](./images/prometheus1.PNG)
+- ![prometheus1](./images/prometheus1.png)
 
-- ![prometheus2](./images/prometheus2.PNG)
+- ![prometheus2](./images/prometheus2.png)

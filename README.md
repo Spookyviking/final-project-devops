@@ -50,3 +50,13 @@ helm install app .
 kubectl port-forward --address 0.0.0.0  <имя_пода_приложения>  8000:3003 &
 ```
 В настройках DNS зоны домена добавляем A-запись на сервер `k8s_master`. После обновления DNS, приложение станет доступно по имени домена/поддомена.
+
+Фотооотчёт:
+
+- ![grafana1](./images/grafana1.PNG)
+
+- ![grafana2](./images/grafana2.PNG)
+
+- ![prometheus1](./images/prometheus1.PNG)
+
+- ![prometheus2](./images/prometheus2.PNG)

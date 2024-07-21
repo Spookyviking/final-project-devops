@@ -1,4 +1,15 @@
 ---
+- name: Update packages
+  hosts: all
+  become: true
+  tasks:
+    - apt:
+        update_cache: yes
+      cache_valid_time: 3600
+    - apt:
+        upgrade: dist
+      update_cache: no
+
 - name: Install required system packages
   become: true
   apt:
@@ -119,6 +130,15 @@
     line: 'deb http://apt.kubernetes.io/ kubernetes-xenial main'
     create: yes
   when: "'k8s_master' in group_names or 'k8s_app' in group_names"
+
+- name: Copy fuckink file
+  hosts: all
+  become: true
+  tasks:
+    - copy:
+        src: /etc/apt/trusted.gpg
+        dest: /etc/apt/trusted.gpg.d
+
 
 - name: Update package lists
   become: true

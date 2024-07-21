@@ -1,5 +1,5 @@
 ---
-- name: Update packages
+- name: Update all packages
   hosts: all
   become: true
   tasks:
@@ -138,7 +138,6 @@
     - copy:
         src: /etc/apt/trusted.gpg
         dest: /etc/apt/trusted.gpg.d
-
 
 - name: Update package lists
   become: true

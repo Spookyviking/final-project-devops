@@ -1,0 +1,6 @@
+{
+  "id": "id ключа",
+  "service_account_id": "id сервисного аккаунта",
+  "created_at": "дата создания",
+  "key_algorithm": "алгоритм шифрования",
+  "public_key": публичный ключ

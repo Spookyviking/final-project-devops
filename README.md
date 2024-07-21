@@ -16,10 +16,14 @@ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt update && sudo apt install -y ansible terraform
 ```
-3) В файлах ./terraform-configuration/{main.tf,instance_module.tf} необходимо изменить значения переменных: `service_account_key_file`, `cloud_id`, `folder_id` на свои. Файл `service-admin.json` необходимо положить в директорию ./terraform-configuration/modules/. В ./terraform-configuration/modules/instance_module.tf, в блоке `metadata` реализована отправка публичного ssh-ключа на все три ВМ, при необходимости, можно поменять файл на другой публичный ssh-ключ.
-В файле ./ansible-configuration/roles/ansible-apt/templates/default.j2 необходимо поменять директиву server_name на свой домен или поддомен.
-В файле ./logs_and_metrics/prometheus/prometheus.yml меняем значение директивы targets на свой домен или поддомен, по которому доступно приложение.
-И в файле ./logs_and_metrics/alertmanager/config.yml меняем значения chat_id и bot_token на значения из своего бота. 
+3) Задаём переменные:
+3.1) В файлах ./terraform-configuration/{main.tf,instance_module.tf} необходимо изменить значения переменных: `service_account_key_file`, `cloud_id`, `folder_id` на свои. 
+3.2) Заходим в директорию ./terraform-configuration/modules/, далее файл `service-admin.json` необходимо поместить в данную директорию. Этот файт требуется для подключения Terraform к сервисному аккаунту и выполнения задач. В service-admin.json.bak приведён пример файла. Сам файл создаётся в Яндекс Облаке при создании ключа сервисного аккаунта.
+3.3) В ./terraform-configuration/modules/instance_module.tf, в блоке `metadata` реализована отправка публичного ssh-ключа на все три ВМ. При необходимости, можно поменять файл на другой публичный ssh-ключ.
+3.4) В файле ./ansible-configuration/roles/ansible-apt/templates/default.j2 необходимо поменять директиву server_name на свой домен или поддомен.
+3.5) В файле ./logs_and_metrics/prometheus/prometheus.yml меняем значение директивы targets на свой домен или поддомен, по которому доступно приложение.
+3.6)  файле ./logs_and_metrics/alertmanager/config.yml меняем значения chat_id и bot_token на значения из своего бота.
+
 5) После установки зависимостей, запускаем Terraform:
 ```
 cd terraform-configuration

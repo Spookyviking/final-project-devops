@@ -1,16 +1,10 @@
 ---
-- name: Update all packages
-  hosts: all
+- name: Update all packeges and install required system packages
   become: true
   - apt:
-      update_cache: yes
-    cache_valid_time: 3600
+    update_cache: yes
   - apt:
-      upgrade: dist
-    update_cache: no
-
-- name: Install required system packages
-  become: true
+    upgrade: dist
   apt:
     pkg:
       - apt-transport-https

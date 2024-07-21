@@ -22,7 +22,7 @@ sudo apt update && sudo apt install -y ansible terraform
 
 3.2) Заходим в директорию `./terraform-configuration/modules/`, далее файл `service-admin.json` необходимо поместить в данную директорию. Этот файт требуется для подключения Terraform к сервисному аккаунту и выполнения задач. В `service-admin.json.bak` приведён пример файла. Сам файл создаётся в Яндекс Облаке при создании ключа сервисного аккаунта.
 
-3.3) В ./terraform-configuration/modules/instance_module.tf, в блоке `metadata` реализована отправка публичного ssh-ключа на все три ВМ. При необходимости, можно поменять файл на другой публичный ssh-ключ.
+3.3) В файле `./terraform-configuration/modules/instance_module.tf` в блоке `metadata` реализована отправка публичного ssh-ключа на все три ВМ. При необходимости, можно поменять файл на другой публичный ssh-ключ.
 
 3.4) В файле `./ansible-configuration/roles/ansible-apt/templates/default.j2` необходимо поменять директиву `server_name` на свой домен или поддомен.
 

@@ -1,9 +1,9 @@
 ---
 - name: Update all packeges and install required system packages
   become: true
-  - apt:
+  apt:
     update_cache: yes
-  - apt:
+  apt:
     upgrade: dist
   apt:
     pkg:

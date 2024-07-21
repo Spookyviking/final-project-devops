@@ -30,14 +30,14 @@ sudo apt update && sudo apt install -y ansible terraform
 
 3.6)  файле `./logs_and_metrics/alertmanager/config.yml` меняем значения `chat_id` и bot_token на значения из своего бота.
 
-5) После установки зависимостей, запускаем Terraform:
+5) После установки необходимых зависимостей и задания переменных, запускаем через Terraform процесс развёртывания необходимых ВМ в Яндекс облаке и их автоматическую последующую настройку посредством Ansible:
 ```
 cd terraform-configuration
 terraform init
 terraform plan
 terraform apply
 ```
-После запуска начнется создание сети, подсети и трех ВМ в Яндекс Облаке. Две из них (master и app) для кластера Kubernetes, а srv для мониторинга. Сразу после завершения создания ВМ автоматически начнется выполнение скрипта ./terraform-configuration/create_inventory.py, который на базе файла состояния Terraform создаст содержимое для файла ./ansible-configuration/inventory/servers.yaml. Далее происходит автоматический запуск Ansible playbook'а `ansible-apt.yaml`, который дождется готовности только что созданных ВМ и произведет на них первоначальную установку необходимых пакетов, таких как `apt-transport-https`, `ca-certificates`, `curl`, `software-properties-common`, `python3-pip`, `virtualenv`, `python3-setuptools`, `gnupg`, `gnupg2`, `gpg`, `unzip`.
+После запуска начнется создание сети, подсети и трех ВМ в Яндекс Облаке. Две из них (master и app) для кластера Kubernetes, а srv для мониторинга работоспособности ВМ и сбора логов. Сразу после завершения создания ВМ автоматически начнется выполнение скрипта `./terraform-configuration/create_inventory.py`, который на базе файла состояния Terraform создаст содержимое для файла `./ansible-configuration/inventory/servers.yaml`. Далее происходит автоматический запуск Ansible playbook'а `ansible-apt.yaml`, который дождется готовности только что созданных ВМ и произведет на них первоначальную установку необходимых пакетов, таких как `apt-transport-https`, `ca-certificates`, `curl`, `software-properties-common`, `python3-pip`, `virtualenv`, `python3-setuptools`, `gnupg`, `gnupg2`, `gpg`, `unzip`.
 
 Далее последует подготовка внутренней инфраструктуры всех серверов, а конкретно:
 1) Подготовка серверов `k8s_master` и `k8s_app` для работы в кластере Kubernetes, установка Helm на `k8s_master`;

@@ -1,5 +1,6 @@
 ---
 - name: Install required system packages
+  become: true
   apt:
     pkg:
       - apt-transport-https
@@ -17,12 +18,14 @@
     update_cache: true
 
 - name: Add GPG key
+  become: true
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
   when: "'srv' in group_names"
 
 - name: Set the stable docker repository
+  become: true
   apt_repository:
     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_lsb.codename}} stable"
     state: present
@@ -30,6 +33,7 @@
   when: "'srv' in group_names"
 
 - name: Install docker-ce
+  become: true
   apt:
     name: docker-ce
     state: present
@@ -43,6 +47,7 @@
   when: "'srv' in group_names"
 
 - name: Enable and start Docker
+  become: true
   systemd:
     state: started
     enabled: yes
@@ -50,6 +55,7 @@
   when: "'srv' in group_names"
 
 - name: Create a directory for logs
+  become: true
   file:
     path: /home/ubuntu/logs
     state: directory
@@ -57,6 +63,7 @@
   when: "'srv' in group_names"
 
 - name: Copy docker-compose content to srv
+  become: true
   copy:
     src: ~/final-project-devops/logs_and_metrics/
     dest: /home/ubuntu/logs/
@@ -113,7 +120,13 @@
     create: yes
   when: "'k8s_master' in group_names or 'k8s_app' in group_names"
 
+- name: Update package lists
+  become: true
+  apt:
+    update_cache: yes
+
 - name: Install required packages for k8s cluster
+  become: true
   apt:
     pkg:
       - kubelet

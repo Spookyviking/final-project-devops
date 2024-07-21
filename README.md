@@ -18,7 +18,7 @@ sudo apt update && sudo apt install -y ansible terraform
 ```
 3) Задаём переменные:
    
-3.1)В файлах ./terraform-configuration/{main.tf,instance_module.tf} необходимо изменить значения переменных: `service_account_key_file`, `cloud_id`, `folder_id` на свои. 
+3.1) В файлах ./terraform-configuration/{main.tf,instance_module.tf} необходимо изменить значения переменных: `service_account_key_file`, `cloud_id`, `folder_id` на свои. 
 
 3.2) Заходим в директорию ./terraform-configuration/modules/, далее файл `service-admin.json` необходимо поместить в данную директорию. Этот файт требуется для подключения Terraform к сервисному аккаунту и выполнения задач. В service-admin.json.bak приведён пример файла. Сам файл создаётся в Яндекс Облаке при создании ключа сервисного аккаунта.
 

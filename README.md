@@ -17,21 +17,27 @@ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(l
 sudo apt update && sudo apt install -y ansible terraform
 ```
 3) Задаём переменные:
-3.1) В файлах ./terraform-configuration/{main.tf,instance_module.tf} необходимо изменить значения переменных: `service_account_key_file`, `cloud_id`, `folder_id` на свои. 
-3.2) Заходим в директорию ./terraform-configuration/modules/, далее файл `service-admin.json` необходимо поместить в данную директорию. Этот файт требуется для подключения Terraform к сервисному аккаунту и выполнения задач. В service-admin.json.bak приведён пример файла. Сам файл создаётся в Яндекс Облаке при создании ключа сервисного аккаунта.
-3.3) В ./terraform-configuration/modules/instance_module.tf, в блоке `metadata` реализована отправка публичного ssh-ключа на все три ВМ. При необходимости, можно поменять файл на другой публичный ssh-ключ.
-3.4) В файле ./ansible-configuration/roles/ansible-apt/templates/default.j2 необходимо поменять директиву server_name на свой домен или поддомен.
-3.5) В файле ./logs_and_metrics/prometheus/prometheus.yml меняем значение директивы targets на свой домен или поддомен, по которому доступно приложение.
-3.6)  файле ./logs_and_metrics/alertmanager/config.yml меняем значения chat_id и bot_token на значения из своего бота.
+   
+3.1) В файлах `./terraform-configuration/{main.tf,instance_module.tf}` необходимо изменить значения переменных: `service_account_key_file`, `cloud_id`, `folder_id` на свои. 
 
-5) После установки зависимостей, запускаем Terraform:
+3.2) Заходим в директорию `./terraform-configuration/modules/`, далее файл `service-admin.json` необходимо поместить в данную директорию. Этот файт требуется для подключения Terraform к сервисному аккаунту и выполнения задач. В `service-admin.json.bak` приведён пример файла. Сам файл создаётся в Яндекс Облаке при создании ключа сервисного аккаунта.
+
+3.3) В файле `./terraform-configuration/modules/instance_module.tf` в блоке `metadata` реализована отправка публичного ssh-ключа на все три ВМ. При необходимости, можно поменять файл на другой публичный ssh-ключ.
+
+3.4) В файле `./ansible-configuration/roles/ansible-apt/templates/default.j2` необходимо поменять директиву `server_name` на свой домен или поддомен.
+
+3.5) В файле `./logs_and_metrics/prometheus/prometheus.yml` меняем значение директивы `targets` на свой домен или поддомен, по которому доступно приложение.
+
+3.6)  файле `./logs_and_metrics/alertmanager/config.yml` меняем значения `chat_id` и bot_token на значения из своего бота.
+
+5) После установки необходимых зависимостей и задания переменных, запускаем через Terraform процесс развёртывания необходимых ВМ в Яндекс облаке и их автоматическую последующую настройку посредством Ansible:
 ```
 cd terraform-configuration
 terraform init
 terraform plan
 terraform apply
 ```
-После запуска начнется создание сети, подсети и трех ВМ в Яндекс Облаке. Две из них (master и app) для кластера Kubernetes, а srv для мониторинга. Сразу после завершения создания ВМ автоматически начнется выполнение скрипта ./terraform-configuration/create_inventory.py, который на базе файла состояния Terraform создаст содержимое для файла ./ansible-configuration/inventory/servers.yaml. Далее происходит автоматический запуск Ansible playbook'а `ansible-apt.yaml`, который дождется готовности только что созданных ВМ и произведет на них первоначальную установку необходимых пакетов, таких как `apt-transport-https`, `ca-certificates`, `curl`, `software-properties-common`, `python3-pip`, `virtualenv`, `python3-setuptools`, `gnupg`, `gnupg2`, `gpg`, `unzip`.
+После запуска начнется создание сети, подсети и трех ВМ в Яндекс Облаке. Две из них (master и app) для кластера Kubernetes, а srv для мониторинга работоспособности ВМ и сбора логов. Сразу после завершения создания ВМ автоматически начнется выполнение скрипта `./terraform-configuration/create_inventory.py`, который на базе файла состояния Terraform создаст содержимое для файла `./ansible-configuration/inventory/servers.yaml`. Далее происходит автоматический запуск Ansible playbook'а `ansible-apt.yaml`, который дождется готовности только что созданных ВМ и произведет на них первоначальную установку необходимых пакетов, таких как `apt-transport-https`, `ca-certificates`, `curl`, `software-properties-common`, `python3-pip`, `virtualenv`, `python3-setuptools`, `gnupg`, `gnupg2`, `gpg`, `unzip`.
 
 Далее последует подготовка внутренней инфраструктуры всех серверов, а конкретно:
 1) Подготовка серверов `k8s_master` и `k8s_app` для работы в кластере Kubernetes, установка Helm на `k8s_master`;
@@ -66,3 +72,5 @@ kubectl port-forward --address 0.0.0.0  <имя_пода_приложения>  
 - ![prometheus2](./images/prometheus2.png)
 
 - ![yandex](./images/yandex.png)
+
+[DockerHub для проверки] (https://hub.docker.com/repository/docker/spookyviking/django-app/general)

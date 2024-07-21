@@ -1,4 +1,6 @@
 # Финальный проект DevOps
+final-project-devops
+
 Проект состоит из файлов для создания облачных ВМ в Яндекс Облаке с помощью Terraform и настройки конфигурации с помощью Ansible.
 
 Первоначальные шаги для установки и работы с проектом:
@@ -48,3 +50,13 @@ helm install app .
 kubectl port-forward --address 0.0.0.0  <имя_пода_приложения>  8000:3003 &
 ```
 В настройках DNS зоны домена добавляем A-запись на сервер `k8s_master`. После обновления DNS, приложение станет доступно по имени домена/поддомена.
+
+Фотооотчёт:
+
+- ![grafana1](./images/grafana1.png)
+
+- ![grafana2](./images/grafana2.png)
+
+- ![prometheus1](./images/prometheus1.png)
+
+- ![prometheus2](./images/prometheus2.png)

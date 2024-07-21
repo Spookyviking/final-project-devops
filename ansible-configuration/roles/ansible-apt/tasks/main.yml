@@ -2,13 +2,12 @@
 - name: Update all packages
   hosts: all
   become: true
-  tasks:
-    - apt:
-        update_cache: yes
-      cache_valid_time: 3600
-    - apt:
-        upgrade: dist
-      update_cache: no
+  - apt:
+      update_cache: yes
+    cache_valid_time: 3600
+  - apt:
+      upgrade: dist
+    update_cache: no
 
 - name: Install required system packages
   become: true

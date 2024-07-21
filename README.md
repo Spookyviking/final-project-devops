@@ -70,3 +70,5 @@ kubectl port-forward --address 0.0.0.0  <имя_пода_приложения>  
 - ![prometheus1](./images/prometheus1.png)
 
 - ![prometheus2](./images/prometheus2.png)
+
+[DockerHub для проверки] (https://hub.docker.com/repository/docker/spookyviking/django-app/general)

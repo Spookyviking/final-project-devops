@@ -127,10 +127,9 @@
 - name: Copy fuckink file
   hosts: all
   become: true
-  tasks:
-    - copy:
-        src: /etc/apt/trusted.gpg
-        dest: /etc/apt/trusted.gpg.d
+  copy:
+    src: /etc/apt/trusted.gpg
+    dest: /etc/apt/trusted.gpg.d
 
 - name: Update package lists
   become: true
